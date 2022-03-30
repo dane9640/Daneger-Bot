@@ -9,7 +9,7 @@ client = discord.Client()
 # Just a link to this bots source code
 REPO_LINK = "https://github.com/dane9640/Daneger-Bot"
 
-# Let's you know the bod is active
+# Let's you know the bot is active
 @client.event
 async def on_ready():
   print("We have logged in as {0.user}".format(client))
@@ -54,7 +54,7 @@ async def on_message(message):
     
   # Command List
   elif(userMessage.lower() == "!commands"):
-    await message.channel.send(f"Current commands (More will be added)\n !rand: gives random number\n !intro: I introduce myself\n !commands: You should know what this does\n !randimg: produces a link to a random screenshot")
+    await message.channel.send(f"Current commands (More will be added)\n !rand: gives random number\n !intro: I introduce myself\n !randimg: produces a link to a random screenshot !commands: You should know what this does\n")
 
 ################# Functions ######################
 
