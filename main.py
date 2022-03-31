@@ -1,3 +1,8 @@
+############ Daneger Bot ############
+##### Written by: Danger Dane
+##### Liscense: Completly Open Source, feel free to
+#####           take and use code however you want
+
 import os
 import discord
 import random
@@ -51,10 +56,19 @@ async def on_message(message):
   # Random Image Command
   elif(userMessage.lower() == "!randimg"):
     await message.channel.send(f"Here is a random screenshot I got from \'hacking\': {randomImgURL()}")
+
+  # Rock Paper Scissors Command
+  elif("!rps" in userMessage):
+    pick = userMessage.split(" ")[1].lower()
+    result = rps(pick)
+    if "win" in result[1]:
+      await message.channel.send(f"{result[0].capitalize()} \n You Win, Congratz!")
+    else:
+      await message.channel.send(f"{result[0].capitalize()}\n You lost, why not try again?\n I\'m probably not cheating...")
     
   # Command List
   elif(userMessage.lower() == "!commands"):
-    await message.channel.send(f"Current commands (More will be added)\n !rand: gives random number\n !intro: I introduce myself\n !randimg: produces a link to a random screenshot !commands: You should know what this does\n")
+    await message.channel.send(f"Current commands (More will be added)\n\n !rand: gives random number\n\n !intro: I introduce myself\n\n !randimg: produces a link to a random screenshot\n\n !rps #yourChoice: Play a game of Rock Paper Scissors  !commands: You should know what this does")
 
 ################# Functions ######################
 
@@ -76,6 +90,29 @@ def randomImgURL():
 
   url = "https://prnt.sc/" + chars + nums
   return url
+
+
+# Rock paper scissors but with silly logic
+def rps(userPick):
+  pickChoices = "rock", "paper", "scissors"
+  botPick = ""
+  result = "lose"
+  if random.randint(1,2) == 1:
+    result = "win"
+    if userPick in pickChoices[0]:
+      botPick = pickChoices[2]
+    elif userPick in pickChoices[1]:
+      botPick = pickChoices[0]
+    else:
+      botPick = pickChoices[1]
+  else: 
+    if userPick in pickChoices[0]:
+      botPick = pickChoices[1]
+    elif userPick in pickChoices[1]:
+      botPick = pickChoices[2]
+    else:
+      botPick = pickChoices[0]    
+  return botPick, result
 
 # Runs the bot
 client.run(os.environ['discordToken'])
