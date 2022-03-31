@@ -1,7 +1,8 @@
-############ Daneger Bot ############
-##### Written by: Danger Dane
-##### Liscense: Completly Open Source, feel free to
-#####           take and use code however you want
+############ Daneger Bot ############################
+##### Written by: Danger Dane                       #
+##### Liscense: Completly Open Source, feel free to #
+#####           take and use code however you want  #
+#####################################################
 
 import os
 import discord
@@ -41,7 +42,15 @@ async def on_message(message):
     # message otherwise.
     else:
       await message.channel.send(f"The fuck did you just say to me, {username}?!")
-      
+
+  #complimenting the bot
+  elif("good bot" in userMessage.lower()):
+    await message.channel.send(f"**Blush**")
+
+  #Shaming the bot
+  elif("bad bot" in userMessage.lower()):
+    await message.channel.send(f"**Cries**")
+    
 ##################### COMMANDS ################
       
   # Random number command
