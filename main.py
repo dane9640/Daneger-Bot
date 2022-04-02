@@ -1,7 +1,7 @@
 ############ Daneger Bot ############################
-##### Written by: Danger Dane                       #
-##### Liscense: Completly Open Source, feel free to #
-#####           take and use code however you want  #
+#     Written by: Danger Dane                       #
+#     Liscense: Completly Open Source, feel free to #
+#               take and use code however you want  #
 #####################################################
 
 import os
@@ -74,6 +74,10 @@ async def on_message(message):
       await message.channel.send(f"{result[0].capitalize()} \n You Win, Congratz!")
     else:
       await message.channel.send(f"{result[0].capitalize()}\n You lost, why not try again?\n I\'m probably not cheating...")
+
+  # Ask for user if anyone wants to chill
+  elif("!chill" in userMessage):
+    await message.channel.send(f"@{username} wants to know, anyone wanna chill?")
     
   # Command List
   elif(userMessage.lower() == "!commands"):
