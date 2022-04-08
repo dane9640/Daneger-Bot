@@ -8,12 +8,28 @@ import os
 import discord
 import random
 import string
+import sqlite3
+
+# Key-Value Database for quotes
+# from replit import db
+
+
+# SQLite3 Database for Quotes
+db = sqlite3.connect('Quotes.db')
+cur = db.cursor()
+
+cur.execute("CREATE TABLE IF NOT EXISTS Quotes (id int(4), quote text)")
 
 # Basically the controller
 client = discord.Client()
 
 # Just a link to this bots source code
 REPO_LINK = "https://github.com/dane9640/Daneger-Bot"
+
+#  Quote ID counter
+cur.execute("SELECT COUNT(*) FROM Quotes")
+quoteID = cur.fetchone()
+print(quoteID[0])
 
 # Let's you know the bot is active
 @client.event
@@ -78,10 +94,33 @@ async def on_message(message):
   # Ask for user if anyone wants to chill
   elif("!chill" in userMessage):
     await message.channel.send(f"@{username} wants to know, anyone wanna chill?")
+
+  # Saves quote user suggests
+  elif("!savequote" in userMessage.lower()):
+    global quoteID
+    quote = userMessage.split("\"")[1]
+    cur.execute("INSERT INTO Quotes VALUES(?, ?)", (quoteID[0], quote))
+    db.commit()
+    cur.execute("SELECT COUNT(*) FROM Quotes")
+    quoteID = cur.fetchone()
+
+  #Displays random quote from database
+  elif("!quote" in userMessage.lower()):
+    randID = random.randint(1, quoteID[0])
+    cur.execute(f"SELECT quote FROM Quotes WHERE rowid = {randID}")
+    quote = cur.fetchone()
+    print(randID)
+    await message.channel.send(f"{quote[0]}")
+    
+  # Displays database
+  # TODO ADD ARGUMENT TO SELECT CERTAIN DATABASE
+  elif("!displaydb" in userMessage.lower()):
+    cur.execute("SELECT * FROM Quotes")
+    print(cur.fetchall())
     
   # Command List
   elif(userMessage.lower() == "!commands"):
-    await message.channel.send(f"Current commands (More will be added)\n\n !rand: gives random number\n\n !intro: I introduce myself\n\n !randimg: produces a link to a random screenshot\n\n !rps #yourChoice: Play a game of Rock Paper Scissors  !commands: You should know what this does")
+    await message.channel.send(f"Current commands (More will be added)\n\n!rand: gives random number\n\n !intro: I introduce myself\n\n!randimg: produces a link to a random screenshot\n\n!rps yourChoice: Play a game of Rock Paper Scissors\n\n!chill: Ask if anyone wants to chill\n\n!saveQuote \"quote\": Save a new quote to the database of quotes\n\n!quote: says a random quote from the quote database\n\n!commands: You should know what this does")
 
 ################# Functions ######################
 
@@ -126,6 +165,10 @@ def rps(userPick):
     else:
       botPick = pickChoices[0]    
   return botPick, result
+
+def saveQuote(quote):
+  return
+  
 
 # Runs the bot
 client.run(os.environ['discordToken'])
